@@ -320,7 +320,7 @@ void createOptab()
 }
 
 
-
+/*
 int main()
 {
 createOptab();
@@ -330,5 +330,6 @@ printf("String is %s",ch);
 
 return 0;
 }
+*/
 
 
