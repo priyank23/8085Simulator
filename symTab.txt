@@ -1,0 +1,8 @@
+Y	1
+Z	4
+A	5
+B	7
+C	8
+X	9
+END	15
+program Length=16 bytes
