@@ -1,0 +1,13 @@
+start:
+y:  lxi H,2050h
+z:  mov a,M
+a:  ani 16h
+b:  mov b,a
+c:  inx H
+x:  mov M,a
+    ani 16
+    add b
+    inx H
+    mov M,a
+    jmp x
+end:

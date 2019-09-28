@@ -325,11 +325,7 @@ int main()
 {
 createOptab();
 char *ch=search("sbfjsbbj");
-
 printf("String is %s",ch);
-
 return 0;
 }
 */
-
-
