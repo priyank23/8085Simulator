@@ -41,7 +41,7 @@
 //-------------------------------CONVERSION---------------------------------//
 int hex_decimal(char *hexVal[])//hex->decimal
 {
-	int len = strlen(hexVal); 
+	int x = strlen(hexVal); 
       
     // Initializing base value to 1, i.e 16^0 
     int base = 1; 
@@ -49,7 +49,7 @@ int hex_decimal(char *hexVal[])//hex->decimal
     int dec_val = 0; 
       
     // Extracting characters as digits from last character 
-    for (int i=len-1; i>=0; i--) 
+    for (int i=x-1; i>=0; i--) 
     {    
         // if character lies in '0'-'9', converting  
         // it to integral 0-9 by subtracting 48 from 

@@ -82,7 +82,7 @@ void decToHexa(int n,char hex[])
       int k=0;
     // printing hexadecimal number array in reverse order 
     for(int j=i-1; j>=0; j--) 
-     {printf("X");  hex[k++]= hexaDeciNum[j];}
+     { hex[k++]= hexaDeciNum[j];}
        hex[k]='\0'; 
 } 
 
@@ -186,11 +186,13 @@ void pass1()
     line[strlen(line)-1] = '\0';
 
     tokenize(line);
-    if(strcmp(label,"START")==0 || strcmp(label,"start")==0)
+    while(strcmp(label,"START")!=0 && strcmp(label,"start")!=0)
     {
+        fgets(line,50,input);
+        line[strlen(line)-1] = '\0';
+        tokenize(line);
         locctr=1;
     }
-    else locctr=-1;
     // fgets(line,50,input);
     // tokenize(line);
     while(strcmp(label,"END")!=0)

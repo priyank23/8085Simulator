@@ -1,7 +1,10 @@
+x
+y
+z
 start:
 y:  lxi H,2050h
 z:  mov a,M
-a:  ani 16h
+a:  ani 16
 b:  mov b,a
 c:  inx H
 x:  mov M,a

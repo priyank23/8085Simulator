@@ -11,20 +11,23 @@ void pass2()
 
     fgets(line,50,input);
     tokenize(line);
-    if(strcmp(label,"START")==0)
+    while(strcmp(label,"START")!=0)
     {
-        fprintf(output,"\n");
+        fgets(line,50,input);
+        line[strlen(line)-1] = '\0';
+        tokenize(line);
     }
+    fprintf(output,"\n");
     fgets(line,50,input);
     tokenize(line);
-    int i=1;
+    // int i=1;
     while(strcmp(label,"END")!=0)
     {
-        printf("iter: %d\n",i++);
-        printf("%s\n%s\n%s\n",label,opcode,operand);
+        // printf("iter: %d\n",i++);
+        // printf("%s\n%s\n%s\n",label,opcode,operand);
         if(strcmp(label,";")==0) continue;
         char *OP=search(opcode);
-        printf("%s\n",OP);
+        // printf("%s\n",OP);
         if(OP!="NULL")
         {
             fprintf(output,"%s\n",OP);
@@ -33,7 +36,7 @@ void pass2()
                 if(search2(operand)==-1)
                 {
                     int lenop=strlen(operand);
-                    printf("%d",lenop);
+                    // printf("%d",lenop);
                     if(lenop<=3)
                     {
                         fprintf(output,"%s\n",operand);
@@ -47,7 +50,7 @@ void pass2()
                 else
                 {
                     int var=search2(operand);
-                    printf("%d\n",var);
+                    // printf("%d\n",var);
                     if(var<=9)
                     {
                         fprintf(output,"0%d\t0\n00\t0\n",var);
@@ -68,9 +71,9 @@ void pass2()
                         char *l,*h;
                         l=(char*)malloc(5);
                         h=(char*)malloc(5);
-                        printf("X");
+                        // printf("X");
                         decToHexa(var%100,l);
-                        printf("X");
+                        // printf("X");
                         decToHexa(var/100,h);
                         if(strlen(l)<3)
                         {
@@ -94,6 +97,7 @@ void pass2()
         else{
             fprintf(output,"0\n");
                 printf("ERROR2!!");
+                return;
         }
         fgets(line,50,input);
         tokenize(line);
