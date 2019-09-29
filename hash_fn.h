@@ -179,7 +179,7 @@ void createOptab()
 	INSERT("MOV_B_E","43");
 	INSERT("MOV_B_H","44");
 	INSERT("MOV_B_L","45");
-	INSERT("MOVE_B_M","46");
+	INSERT("MOV_B_M","46");
 	INSERT("MOV_C_A","4F");
 	INSERT("MOV_C_B","48");
 	INSERT("MOV_C_C","49");
@@ -276,6 +276,7 @@ void createOptab()
 	INSERT("RST_5","EF");
 	INSERT("RST_6","F7");
 	INSERT("RST_7","FF");
+	INSERT("RST","EF");
 	INSERT("RZ","C8");
 	INSERT("SBB_A","9F");
 	INSERT("SBB_B","98");
