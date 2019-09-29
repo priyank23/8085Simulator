@@ -19,6 +19,8 @@ int loader(FILE *objfile)
         if ((pos = strchr(line, '\n')) != NULL)
             *pos = '\0';
 
+        printf("%s\n",line);//debug print
+
         char *p;
         p = (char *)malloc(10 * sizeof(char));
         p = strtok(line, " ");
@@ -29,81 +31,6 @@ int loader(FILE *objfile)
 
         strcpy(memory[memaddress], opcode);
         memaddress++;
-
-        /*
-        //end of file
-        if (p == NULL)
-        {
-            //printf("case null\n");//debug
-            relocationCounter = memaddress;
-            return startAddress;
-        }
-        else
-        {
-            //printf("case not null\n");//debug
-            p = strtok(NULL, " ");
-            //address
-            if (p != NULL)
-            {
-                //printf("case not null\n");//debug
-                //relative address
-                if (strcmp(p, "0"))
-                {
-                    //printf("case relative address\n");//debug
-                    fgets(line, 1000, objfile);
-                    p = strtok(line, " ");
-                    p = strtok(NULL, " ");
-                    char *opcode0;
-                    strcpy(opcode0, p);
-                    strcat(opcode0, opcode);
-                    char *addressHex = opcode0;
-
-                    //loading lower address
-                    memory[memaddress][0] = addressHex[2];
-                    memory[memaddress][1] = addressHex[3];
-
-                    memaddress++;
-
-                    //loading higher address
-                    memory[memaddress][0] = addressHex[0];
-                    memory[memaddress][1] = addressHex[1];
-                }
-                //absolute address
-                else if (strcmp(p, "1"))
-                {
-                    //printf("case absolute address\n");//debug
-                    fgets(line, 1000, objfile);
-                    p = strtok(line, " ");
-                    p = strtok(NULL, " ");
-                    char *opcode0;
-                    strcpy(opcode0, p);
-                    strcat(opcode0, opcode);
-                    int address = hex_decimal(opcode0);
-
-                    //relocating absolute addresses
-                    address += relocationCounter;
-                    char *addressHex = decimal_hex(address);
-
-                    //loading lower address
-                    memory[memaddress][0] = addressHex[2];
-                    memory[memaddress][1] = addressHex[3];
-
-                    memaddress++;
-
-                    //loading higher address
-                    memory[memaddress][0] = addressHex[0];
-                    memory[memaddress][1] = addressHex[1];
-                }
-            }
-            //not an address
-            else
-            {
-                //printf("case opcode\n");//debug
-                strcpy(memory[memaddress], opcode);
-                memaddress++;
-            }
-        }
-        */
     }
     relocationCounter = memaddress;
 
@@ -220,9 +147,7 @@ int main(int argc, char *argv[])
 
     int startAddress = loader(objfile);
 
-    for (int i = 0; i < 8; i++)
-        printf("%s\n", memory[i]);
-    printf("-------------------------\n");
+    printf("Running prog\n");
 
     run(startAddress);
 
