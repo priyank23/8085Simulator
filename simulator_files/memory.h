@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int acc;
+int acc = 0;
 int regA;
 int regB;
 int regC;
@@ -10,11 +10,12 @@ int regE;
 int regH;
 int regL;
 int mem;
-char memory[10000][2];
+char memory[10000][3];
 int relocationCounter;
 int pc;
-int flagC;
-int flagZ;
+int flagC = 0;
+int flagZ = 0;
+int flagS = 0;
 
 struct Stack
 {
@@ -61,7 +62,7 @@ void initializeMachine()
 }
 
 //returns the current opcode and increments the pc
-char* readnext()
+char *readnext()
 {
-    return memory[pc++];
+    return memory[++pc];
 }
