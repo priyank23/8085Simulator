@@ -135,7 +135,7 @@ void showOutput()
     printf("\n\nOUTPUT:\n");
     while (1)
     {
-        printf("\nEnter the memory address (hexadecimal):");
+        printf("\nEnter the memory address (hexadecimal): ");
         char addr[10];
         scanf("%s", addr);
         getchar();
@@ -148,6 +148,46 @@ void showOutput()
         fflush(stdin);
         if (choice != 'y' && choice != 'Y')
             break;
+    }
+}
+
+//Taking data input from user
+void userInput()
+{
+    char upperlimit[5] = "3FFF";
+    char lowerlimit[5] = "2000";
+    printf("-----------------------------------------\n");
+    printf("\n\nINPUT:\n");
+    printf("(Input data must be placed from %sh to %sh memory locations)\n",lowerlimit,upperlimit);
+    while (1)
+    {
+        printf("\nEnter data (y/n): ");
+        char choice;
+        scanf("%c", &choice);
+        getchar();
+        fflush(stdin);
+        if (choice != 'y' && choice != 'Y')
+            break;
+        printf("\nEnter the memory address (hexadecimal): ");
+        char addr[10];
+        scanf("%s", addr);
+        getchar();
+        fflush(stdin);
+        if (hex_decimal(lowerlimit) <= hex_decimal(addr) && hex_decimal(addr) < hex_decimal(upperlimit))
+        {
+            printf("Enter the value (hexdecimal): ");
+            char val[3];
+            scanf("%s", val);
+            getchar();
+            fflush(stdin);
+
+            strcpy(memory[hex_decimal(addr)], val);
+        }
+        else
+        {
+            printf("Input data must be placed from %sh to %sh memory locations\n",lowerlimit,upperlimit);
+        }
+        
     }
 }
 
@@ -174,7 +214,9 @@ int main(int argc, char *argv[])
 
     initializeMachine();
 
-    printf("Simulation started\n"); //debug
+    userInput();
+
+    printf("Simulation started\n");
 
     int startAddress = loader(objfile);
 
