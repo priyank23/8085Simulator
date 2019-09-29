@@ -1,18 +1,18 @@
-START:	
-    LXI H,8000H
-	MOV B,M
-	MVI D,01H
-FACT:	CALL MUL
-	DCR B
-	JNZ FACT
-	INX H
-	MOV M,D
-	RST_5
-MUL	MOV E,B
-	XRA A
-ML	ADD D
-	DCR E
-	JNZ ML
-	MOV D,A
-	RST_5
-END
+start:
+    lxi h,2000h
+    mov b,m
+    mvi d,01h
+fact: call mul
+    dcr b
+    jnz fact
+    inx h
+    mov m,d
+    rst_5
+mul: mov e,b
+    xra a
+ml: add d
+    dcr e
+    jnz ml
+    mov d,a
+    ret
+end
