@@ -19,6 +19,11 @@ int loader(FILE *objfile)
         if ((pos = strchr(line, '\n')) != NULL)
             *pos = '\0';
 
+        if(!strcmp(line,""))
+        {
+            continue;
+        }
+
         printf("%s\n",line);//debug print
 
         char *p;
