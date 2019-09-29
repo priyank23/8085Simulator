@@ -120,11 +120,34 @@ int run(int startAddress)
     while (1)
     {
         int returncode = function(memory[pc]);
-        if(returncode == 0)
+        if (returncode == 0)
         {
             return 0;
         }
         readnext();
+    }
+}
+
+//Output for the user
+void showOutput()
+{
+    printf("-----------------------------------------\n");
+    printf("\n\nOUTPUT:\n");
+    while (1)
+    {
+        printf("\nEnter the memory address (hexadecimal):");
+        char addr[10];
+        scanf("%s", addr);
+        getchar();
+        fflush(stdin);
+        printf("Value at memory[%s] = %s\n", addr, memory[hex_decimal(addr)]);
+        printf("Enter more addresses(y/n): ");
+        char choice;
+        scanf("%c", &choice);
+        getchar();
+        fflush(stdin);
+        if (choice != 'y' && choice != 'Y')
+            break;
     }
 }
 
@@ -163,11 +186,7 @@ int main(int argc, char *argv[])
 
     fclose(objfile);
 
-    printf("fuck\n");
-    //printf("%d\n",hex_decimal("2000"));
-    printf("%d\n",acc);
-    printf("%s\n",memory[hex_decimal("2000")]);
-    printf("funk\n");
+    showOutput();
 
     return 0;
 }
