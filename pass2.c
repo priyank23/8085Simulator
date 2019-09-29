@@ -1,12 +1,19 @@
 #include "pass1.h"
 
-void pass2()
+void pass2(char *file)
 {
-    pass1();
+    pass1(file);
     FILE *input;
     FILE *output;
-    input=fopen("code.txt","r");
-    output=fopen("code.obj","w");
+    input=fopen(file,"r");
+    input=fopen(file,"r");
+    file[strlen(file)-3]='o';
+    file[strlen(file)-2]='b';
+    file[strlen(file)-1]='j';
+    file[strlen(file)]='\0';
+    char *fileOut=(char*)malloc(20);
+    strcpy(fileOut,file);
+    output=fopen(fileOut,"w");
     char *line=(char*)malloc(50);
 
     fgets(line,50,input);
@@ -60,7 +67,7 @@ void pass2()
                         char* l;
                         l=(char*)malloc(5);
                         decToHexa(var,l);
-                        if(strlen(l)<3)
+                        if(strlen(l)<2)
                         {
                             fprintf(output,"0%s\t0\n00\t0\n",l);
                         }
@@ -106,8 +113,8 @@ void pass2()
     fclose(output);
 }
 
-int main()
+int main(int argc,char **argv)
 {
-    pass2();
+    pass2(argv[1]);
     return 0;
 }

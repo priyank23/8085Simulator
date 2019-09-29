@@ -1,16 +1,18 @@
-x
-y
-z
 start:
-y:  lxi H,2050h
-z:  mov a,M
-a:  ani 16
-b:  mov b,a
-c:  inx H
-x:  mov M,a
-    ani 16
-    add b
-    inx H
-    mov M,a
-    jmp x
-end:
+    lxi h,2000h
+    mov b,m
+    mvi d,01h
+fact: call mul
+    dcr b
+    jnz fact
+    inx h
+    mov m,d
+    rst_5
+mul: mov e,b
+    xra a
+ml: add d
+    dcr e
+    jnz ml
+    mov d,a
+    ret
+end

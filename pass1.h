@@ -89,9 +89,9 @@ void decToHexa(int n,char hex[])
 void tokenize(char* line)
 {
     upper_string(line);
-    label[0]='\0';
-    opcode[0]='\0';
-    operand[0]='\0';
+    strcpy(label,"\0");
+    strcpy(opcode,"\0");
+    strcpy(operand,"\0");
     line[strcspn(line, "\n")] = 0;
     int ctr=0,ctr2=0;
     int num_of_tabs=0;
@@ -114,16 +114,23 @@ void tokenize(char* line)
     if(label[ctr2-1]==':') label[ctr2-1]='\0';
     else label[ctr2]='\0';
     ctr2=0;
-    if(label[0]!='\0') ctr++;
+ //  if(label[0]!='\0') ctr++;
     while(line[ctr]!='\0')
     {
         if(line[ctr]==32 && ctr2 !=0)
         {
             if(line[ctr+1]>='0'&& line[ctr+1]<='9')
             break;
-            else {ctr++;opcode[ctr2++]='_';};
+            else 
+            {
+                opcode[ctr2++]='\0';
+                if(strcmp(opcode,"CALL")==0 || strcmp(opcode,"CNC")==0 || strcmp(opcode,"CNZ")==0 || strcmp(opcode,"CP")==0 || strcmp(opcode,"CPE")==0 || strcmp(opcode,"CPI")==0 || strcmp(opcode,"CPO")==0 || strcmp(opcode,"CZ")==0 || strcmp(opcode,"JC")==0 || strcmp(opcode,"JM")==0|| strcmp(opcode,"JMP")==0 || strcmp(opcode,"JNC")==0 || strcmp(opcode,"JNZ")==0 || strcmp(opcode,"JP")==0 || strcmp(opcode,"JPE")==0 || strcmp(opcode,"JPO")==0 || strcmp(opcode,"JZ")==0) break;
+                ctr++;
+                ctr2--;
+                opcode[ctr2++]='_';
+            };
         }
-        else if(line[ctr]==','&&ctr!=0) 
+        else if(line[ctr]==','&&ctr2!=0) 
         {
             if(line[ctr+1]>='0'&& line[ctr+1]<='9')
             break;
@@ -145,16 +152,6 @@ void tokenize(char* line)
     }
     operand[ctr2]='\0';
 
-    if(opcode[0]=='J')
-    {
-        int i;
-        for(i=4;opcode[i]!='\0';i++)
-        {
-            operand[i-4]=opcode[i];
-        }
-        operand[i-4]='\0';
-        opcode[3]='\0';
-    }
     if(operand[0]!='\0')
     {
         if(operand[strlen(operand)-1]=='H')
@@ -170,16 +167,18 @@ void tokenize(char* line)
             decToHexa(toString(operand),operand);
         }
     }
-    // printf("%s\n",label);
-    // printf("%s\n",opcode);
-    //  if (operand!=NULL) printf("%s\n",operand);
+    if(strcmp(label,"\0")!=0) printf("%s\n",label);
+    if(strcmp(opcode,"\0")!=0) printf("%s\n",opcode);
+     if(strcmp(operand,"\0")!=0) printf("%s\n",operand);
 }
-void pass1()
+void pass1(char *file)
 {
     createOptab();
     FILE *input;
     FILE *output;
-    input=fopen("code.txt","r");
+    input=fopen(file,"r");
+    
+    
     output=fopen("symTab.txt","w");
     char *line=(char*)malloc(50);
     fgets(line,50,input);

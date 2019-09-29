@@ -1,8 +1,5 @@
-Y	1
-Z	4
-A	5
-B	7
-C	8
-X	9
-END	17
-program Length=17 bytes
+FACT	6
+MUL	15
+ML	17
+END	23
+program Length=23 bytes
