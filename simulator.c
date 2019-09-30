@@ -158,6 +158,8 @@ int main(int argc, char *argv[])
 
     fclose(objfile);
 
+    printf("\nacc : %d\n",acc);
+
     showOutput();
 
     return 0;

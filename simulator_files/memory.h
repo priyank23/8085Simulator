@@ -16,6 +16,7 @@ int pc;
 int flagC = 0;
 int flagZ = 0;
 int flagS = 0;
+int flagP = 0;
 
 struct Stack
 {

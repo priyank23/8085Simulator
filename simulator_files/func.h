@@ -1646,6 +1646,81 @@ int function(char *ch)
 		regL = temp;
 		update_mem();
 	}
+	//--------------------------DAD----------------------//
+	else if(strcmp(ch, "09")==0)//DAD B
+	{
+		regL+=regC;
+		int carry=0;
+		if(regL>255)
+		{
+			carry=1;
+			regL-=256;
+		}
+		regH+=regB+carry;
+		if(regH>255)
+		{
+			regH-=256;
+			flagC=1;
+		}
+		else
+			flagC=0;
+	}
+	else if(strcmp(ch, "19")==0)//DAD D
+	{
+		regL+=regE;
+		int carry=0;
+		if(regL>255)
+		{
+			carry=1;
+			regL-=256;
+		}
+		regH+=regD+carry;
+		if(regH>255)
+		{
+			regH-=256;
+			flagC=1;
+		}
+		else
+			flagC=0;
+	}
+	else if(strcmp(ch, "29")==0)//DAD H
+	{
+		regL+=regL;
+		int carry=0;
+		if(regL>255)
+		{
+			carry=1;
+			regL-=256;
+		}
+		regH+=regH+carry;
+		if(regH>255)
+		{
+			regH-=256;
+			flagC=1;
+		}
+		else
+			flagC=0;
+	}
+//----------------------SHLD--------------------//
+	else if(strcmp(ch, "22")==0)//SHLD
+	{
+		char * h=decimal_hex(regH);
+		char * l=decimal_hex(regL);
+		char *d=readnext();
+		char *e=readnext();
+		char *de;
+		de = (char *)malloc(2);
+		char H[2];
+		H[0] = *e;
+		H[1] = *(e + 1);
+		strcpy(de, H);
+		strcat(de, d);
+		int el = hex_decimal(de);
+		//int temp=r*100+d;//doubt
+		//acc = hex_decimal(memory[e]);
+		strcpy(memory[el],l);
+		strcpy(memory[el+1],h);
+	}
 	//--------------------------------------------------------//
 	else
 	{
