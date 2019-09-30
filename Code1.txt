@@ -1,18 +1,9 @@
 start:
-    lxi h,2000h
-    mov b,m
-    mvi d,01h
-fact: jmp mul
-x: dcr b
-    jnz fact
-    inx h
-    mov m,d
+;comment line
+    lda 2000h
+    mov b,a
+    lda 2001h
+    add b
+    sta 2050h
     rst_5
-mul: mov e,b
-    xra a
-ml: add d
-    dcr e
-    jnz ml
-    mov d,a
-    jmp x
 end

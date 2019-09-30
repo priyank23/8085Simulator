@@ -117,7 +117,7 @@ void createOptab()
 	INSERT("CZ","CC");
 	INSERT("DAA","27");
 	INSERT("DAD_B","09");
-	INSERT("DAD_H","19");
+	INSERT("DAD_D","19");
 	INSERT("DAD_SP","39");
 	INSERT("DCR_A","3D");
 	INSERT("DCR_B","05");

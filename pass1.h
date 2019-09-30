@@ -175,9 +175,9 @@ void pass1(char *file)
 {
     createOptab();
     FILE *input;
-    FILE *output;
+    FILE *output,*inter;
     input=fopen(file,"r");
-    
+    inter=fopen("inter.txt","w");
     
     output=fopen("symTab.txt","w");
     char *line=(char*)malloc(50);
@@ -192,6 +192,7 @@ void pass1(char *file)
         tokenize(line);
         locctr=1;
     }
+    fprintf(inter,"%s\n",line);
     // fgets(line,50,input);
     // tokenize(line);
     while(strcmp(label,"END")!=0)
@@ -199,7 +200,7 @@ void pass1(char *file)
         // line='\0';
         fgets(line,50,input);
         tokenize(line);
-        if(strcmp(label,";")==0)
+        if(label[0]==';')
             continue;
         if(label[0]!='\0')
         {
@@ -236,10 +237,12 @@ void pass1(char *file)
                 if(strlen(operand)>3) locctr++;
             }
         }
+        fprintf(inter,"%s\n",line);
     }
     fprintf(output,"program Length=%d bytes",locctr);
     fclose(input);
     fclose(output);
+    fclose(inter);
 }
 /*
 int main()

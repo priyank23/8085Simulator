@@ -5,7 +5,7 @@ void pass2(char *file)
     pass1(file);
     FILE *input;
     FILE *output;
-    input=fopen(file,"r");
+    input=fopen("inter.txt","r");
     input=fopen(file,"r");
     file[strlen(file)-3]='o';
     file[strlen(file)-2]='b';
@@ -25,14 +25,16 @@ void pass2(char *file)
         tokenize(line);
     }
    // fprintf(output,"\n");
-    fgets(line,50,input);
-    tokenize(line);
+    
     // int i=1;
     while(strcmp(label,"END")!=0)
     {
+        fgets(line,50,input);
+        tokenize(line);
+        if(strcmp(label,"END")==0) break;
         // printf("iter: %d\n",i++);
         // printf("%s\n%s\n%s\n",label,opcode,operand);
-        if(strcmp(label,";")==0) continue;
+        if(label[0]==';') continue;
         char *OP=search(opcode);
         // printf("%s\n",OP);
         if(OP!="NULL")
@@ -106,8 +108,8 @@ void pass2(char *file)
                 printf("ERROR2!!");
                 return;
         }
-        fgets(line,50,input);
-        tokenize(line);
+        // fgets(line,50,input);
+        // tokenize(line);
     }
     fclose(input);
     fclose(output);
