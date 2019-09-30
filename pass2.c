@@ -24,7 +24,7 @@ void pass2(char *file)
         line[strlen(line)-1] = '\0';
         tokenize(line);
     }
-    fprintf(output,"\n");
+   // fprintf(output,"\n");
     fgets(line,50,input);
     tokenize(line);
     // int i=1;
@@ -37,7 +37,7 @@ void pass2(char *file)
         // printf("%s\n",OP);
         if(OP!="NULL")
         {
-            fprintf(output,"%s\n",OP);
+            fprintf(output,"\n%s",OP);
             if(operand[0]!='\0')
             {
                 if(search2(operand)==-1)
@@ -46,12 +46,12 @@ void pass2(char *file)
                     // printf("%d",lenop);
                     if(lenop<=3)
                     {
-                        fprintf(output,"%s\n",operand);
+                        fprintf(output,"\n%s",operand);
                     }
                     else
                     {
-                        fprintf(output,"%c%c\t1\n",operand[2],operand[3]);
-                        fprintf(output,"%c%c\t1\n",operand[0],operand[1]);
+                        fprintf(output,"\n%c%c 1",operand[2],operand[3]);
+                        fprintf(output,"\n%c%c 1",operand[0],operand[1]);
                     }
                 }
                 else
@@ -60,7 +60,7 @@ void pass2(char *file)
                     // printf("%d\n",var);
                     if(var<=9)
                     {
-                        fprintf(output,"0%d\t0\n00\t0\n",var);
+                        fprintf(output,"\n0%d 0\n00 0",var);
                     }
                     else if(var<100)
                     {
@@ -69,9 +69,9 @@ void pass2(char *file)
                         decToHexa(var,l);
                         if(strlen(l)<2)
                         {
-                            fprintf(output,"0%s\t0\n00\t0\n",l);
+                            fprintf(output,"\n0%s 0\n00 0",l);
                         }
-                        else fprintf(output,"%s\t0\n00\t0\n",l);
+                        else fprintf(output,"\n%s 0\n00 0",l);
                     }
                     else
                     {
@@ -84,14 +84,14 @@ void pass2(char *file)
                         decToHexa(var/100,h);
                         if(strlen(l)<3)
                         {
-                            fprintf(output,"0%s\t0\n",l);
+                            fprintf(output,"\n0%s 0",l);
                         }
-                        else fprintf(output,"%s\t0\n",l);
+                        else fprintf(output,"\n%s 0",l);
                         if(strlen(h)<3)
                         {
-                            fprintf(output,"0%s\t0\n",h);
+                            fprintf(output,"\n0%s 0",h);
                         }
-                        else fprintf(output,"%s\t0\n",h);
+                        else fprintf(output,"\n%s 0",h);
                     }
                 }
             }
@@ -102,7 +102,7 @@ void pass2(char *file)
             }
         }
         else{
-            fprintf(output,"0\n");
+            fprintf(output,"\n0");
                 printf("ERROR2!!");
                 return;
         }

@@ -1,0 +1,6 @@
+FACT	6
+X	8
+MUL	15
+ML	17
+END	24
+program Length=24 bytes

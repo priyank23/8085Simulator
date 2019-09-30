@@ -1,17 +1,18 @@
-START:
-	LDA 2050H
-	MOV B,A
-	LXI H,2051H
-	MVI A,00
-	MVI C,00
-NOTY:	ADD M
-	INX H
-	JNC COND
-	INR C
-COND:	DCR B
-	JNZ NOTY
-	STA 2100H
-	MOV A,C
-	STA 2101H
-	RST_5
-END:
+start:
+    lxi h,2000h
+    mov b,m
+    mvi d,01h
+fact: jmp mul
+x: dcr b
+    jnz fact
+    inx h
+    mov m,d
+    rst_5
+mul: mov e,b
+    xra a
+ml: add d
+    dcr e
+    jnz ml
+    mov d,a
+    jmp x
+end
