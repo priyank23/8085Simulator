@@ -479,7 +479,7 @@ int function(char *ch)
 		strcat(de, D);
 		int e = hex_decimal(de);
 		if (flagZ == 1)
-			pc = e;
+			pc = e-1;
 	}
 	//----------------------------JNZ--------------------------------//
 	else if (strcmp(ch, "C2") == 0) //JNZ
@@ -501,7 +501,7 @@ int function(char *ch)
 		char *l = de;
 		int e = hex_decimal(l);
 		if (flagZ == 0)
-			pc = e;
+		{	pc = e-1;}
 		//free(l);
 		//printf("exit");
 		//printf("\n%d\n",e);
@@ -521,7 +521,7 @@ int function(char *ch)
 		strcat(de, D);
 		int e = hex_decimal(de);
 		if (flagC == 1)
-			pc = e;
+			pc = e-1;
 	}
 	//--------------------------JNC-------------------------------------//
 	else if (strcmp(ch, "D2") == 0) //JNC
@@ -538,7 +538,7 @@ int function(char *ch)
 		strcat(de, D);
 		int e = hex_decimal(de);
 		if (flagC == 0)
-			pc = e;
+			pc = e-1;
 	}
 	//-------------------------INR------------------------------------//
 	else if (strcmp(ch, "3C") == 0) //INR A
@@ -1007,14 +1007,14 @@ int function(char *ch)
 		strcat(de, D);
 		int e = hex_decimal(de);
 		systemStackPush(pc);
-		pc = e; //doubt
+		pc = e-1; //doubt
 				//----------------------------------------------------------------------------------------------work not done//
 	}
 	//--------------------------RET----------------------------//
 	else if (strcmp(ch, "C9") == 0) //RET
 	{
 		int p = systemStackPop();
-		pc = p + 1;
+		pc = p;
 	}
 	//------------------------DCX X----------------------//DCX SP not implemented
 	else if (strcmp(ch, "0B") == 0) //DCX B
