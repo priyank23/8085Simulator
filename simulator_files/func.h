@@ -92,12 +92,13 @@ char *decimal_hex(int decimalNumber) //decimal->hex(2 character)
 		ch[i++] = temp;
 		quotient = quotient / 16;
 	}
-	if(i==1)
-		*(ch+1)='0';
+	if (i == 1)
+		*(ch + 1) = '0';
 	char *ch1;
 	ch1 = (char *)malloc(2);
 	*(ch1 + 1) = *ch;
 	*(ch1) = *(ch + 1);
+	//printf("\nch1%s\n",ch1);
 	return (char *)ch1;
 }
 int *decToBinary(int n) //Decimal->Binary(8 bit)//----------------------------------------------------------------------NEEDS  CORRECTION
@@ -133,14 +134,32 @@ int binToDec(int *n)
 	}
 	return decimalNum;
 }
-
+int count1s(int *a) //counting 1s in decimal format
+{
+	int count = 0;
+	for (int i = 0; i < 8; i++)
+	{
+		if (*(a + i) == 1)
+			count++;
+	}
+	if (count % 2 == 0)
+		return 1;
+	else
+		return 0;
+}
+void update_flagP(int a) //updating parity flag
+{
+	int *p = decToBinary(a);
+	flagP = count1s(p);
+}
 //------------------MEM UPDATATION FUNTION--------------------//
 //USE -> INX H,DCX H,LXI H
 void update_mem()
 {
 	char *h = decimal_hex(regH);
 	char *l = decimal_hex(regL);
-	char hl[4];
+	char *hl;
+	hl = (char *)malloc(2);
 	char H[2];
 	H[0] = *h;
 	H[1] = *(h + 1);
@@ -154,79 +173,87 @@ void update_mem()
 //---------------------------------------------------------------------------------------//
 int function(char *ch)
 {
-	printf("%s\n",ch);
+	printf("%s\n", ch);
 	//-------------------------------ADD-----------------------------//
 	if (strcmp(ch, "87") == 0) //add A
 	{
 		acc += acc;
 		if (acc > 255)
 		{
-			flagC=1;
+			flagC = 1;
 			acc = acc - 256;
 		}
+		update_flagP(acc);
 	}
 	else if (strcmp(ch, "80") == 0) //add B
 	{
 		acc += regB;
 		if (acc > 255)
 		{
-			flagC=1;
+			flagC = 1;
 			acc = acc - 256;
 		}
+		update_flagP(acc);
 	}
 	else if (strcmp(ch, "81") == 0) //add C
 	{
 		acc += regC;
 		if (acc > 255)
 		{
-			flagC=1;
+			flagC = 1;
 			acc = acc - 256;
 		}
+		update_flagP(acc);
 	}
 	else if (strcmp(ch, "82") == 0) //add D
 	{
 		acc += regD;
 		if (acc > 255)
 		{
-			flagC=1;
+			flagC = 1;
 			acc = acc - 256;
 		}
+		update_flagP(acc);
 	}
 	else if (strcmp(ch, "83") == 0) //add E
 	{
 		acc += regE;
 		if (acc > 255)
 		{
-			flagC=1;
+			flagC = 1;
 			acc = acc - 256;
 		}
+		update_flagP(acc);
 	}
 	else if (strcmp(ch, "84") == 0) //add H
 	{
 		acc += regH;
 		if (acc > 255)
 		{
-			flagC=1;
+			flagC = 1;
 			acc = acc - 256;
 		}
+		update_flagP(acc);
 	}
 	else if (strcmp(ch, "85") == 0) //add L
 	{
 		acc += regL;
 		if (acc > 255)
 		{
-			flagC=1;
+			flagC = 1;
 			acc = acc - 256;
 		}
+		update_flagP(acc);
 	}
 	else if (strcmp(ch, "86") == 0) //add M
 	{
 		acc += mem;
 		if (acc > 255)
 		{
-			flagC=1;
+			flagC = 1;
 			acc = acc - 256;
 		}
+		update_flagP(acc);
 	}
 	//----------------------------CMP--------------------------------//
 	else if (strcmp(ch, "BF") == 0) //CMP A
@@ -333,93 +360,100 @@ int function(char *ch)
 	else if (strcmp(ch, "3D") == 0) //DCR A
 	{
 		acc--;
-		if(acc==0)
-			flagZ=1;
+		if (acc == 0)
+			flagZ = 1;
 		else
-			flagZ=0;
+			flagZ = 0;
 		if (acc < 0)
 		{
 			flagS = 1;
 			acc = 256 + acc;
 		}
+		update_flagP(acc);
 	}
 	else if (strcmp(ch, "05") == 0) //DCR B
 	{
 		regB--;
-		if(regB==0)
-			flagZ=1;
+		if (regB == 0)
+			flagZ = 1;
 		else
-			flagZ=0;
+			flagZ = 0;
 		if (regB < 0)
 		{
 			flagS = 1;
 			regB = 256 + regB;
 		}
+		update_flagP(regB);
 	}
 	else if (strcmp(ch, "0D") == 0) //DCR C
 	{
 		regC--;
-		if(regC==0)
-			flagZ=1;
+		if (regC == 0)
+			flagZ = 1;
 		else
-			flagZ=0;
+			flagZ = 0;
 		if (regC < 0)
 		{
 			flagS = 1;
 			regC = 256 + regC;
 		}
+		update_flagP(regC);
 	}
 	else if (strcmp(ch, "15") == 0) //DCR D
 	{
 		regD--;
-		if(regD==0)
-			flagZ=1;
+		if (regD == 0)
+			flagZ = 1;
 		else
-			flagZ=0;
+			flagZ = 0;
 		if (regD < 0)
 		{
 			flagS = 1;
 			regD = 256 + regD;
 		}
+		update_flagP(regD);
 	}
 	else if (strcmp(ch, "1D") == 0) //DCR E
 	{
 		regE--;
-		if(regE==0)
-			flagZ=1;
+		if (regE == 0)
+			flagZ = 1;
 		else
-			flagZ=0;
+			flagZ = 0;
 		if (regE < 0)
 		{
 			flagS = 1;
 			regE = 256 + regE;
 		}
+		update_flagP(regE);
 	}
 	else if (strcmp(ch, "25") == 0) //DCR H
 	{
 		regH--;
-		if(regH==0)
-			flagZ=1;
+		if (regH == 0)
+			flagZ = 1;
 		else
-			flagZ=0;
+			flagZ = 0;
 		if (regH < 0)
 		{
 			flagS = 1;
 			regH = 256 + regH;
 		}
+		update_flagP(regH);
 	}
 	else if (strcmp(ch, "2D") == 0) //DCR L
 	{
 		regL--;
-		if(regL==0)
-			flagZ=1;
+		if (regL == 0)
+			flagZ = 1;
 		else
-			flagZ=0;
+			flagZ = 0;
 		if (regL < 0)
 		{
 			flagS = 1;
 			regL = 256 + regL;
 		}
+		update_flagP(regL);
 	}
 	else if (strcmp(ch, "35") == 0) //DCR M
 	{
@@ -431,68 +465,80 @@ int function(char *ch)
 		}
 	}
 	//--------------------------JZ------------------------------------//
-	else if(strcmp(ch, "CA")==0)//JZ
+	else if (strcmp(ch, "CA") == 0) //JZ
 	{
 		char *D = readnext();
 		//int d=hex_decimal(D);
 		char *E = readnext();
-		char de[4];
+		char *de;
+		de = (char *)malloc(2);
 		char H[2];
 		H[0] = *E;
 		H[1] = *(E + 1);
 		strcpy(de, H);
 		strcat(de, D);
 		int e = hex_decimal(de);
-		if(flagZ==1)
-			pc=e;
+		if (flagZ == 1)
+			pc = e;
 	}
 	//----------------------------JNZ--------------------------------//
-	else if(strcmp(ch, "C2")==0)//JNZ
+	else if (strcmp(ch, "C2") == 0) //JNZ
 	{
 		char *D = readnext();
 		//int d=hex_decimal(D);
 		char *E = readnext();
-		char de[4];
+		//printf("\n%s%s\n",D,E);
+		char *de;
+		de = (char *)malloc(2);
+		//int p=strlen(de);
+		//printf("len%d\n",p);
 		char H[2];
 		H[0] = *E;
 		H[1] = *(E + 1);
 		strcpy(de, H);
 		strcat(de, D);
-		int e = hex_decimal(de);
-		if(flagZ==0)
-			pc=e;
+		//printf("\n%s\n",de);
+		char *l = de;
+		int e = hex_decimal(l);
+		if (flagZ == 0)
+			pc = e;
+		//free(l);
+		//printf("exit");
+		//printf("\n%d\n",e);
 	}
 	//--------------------------JC-------------------------------------//
-	else if(strcmp(ch, "DA")==0)//JC
+	else if (strcmp(ch, "DA") == 0) //JC
 	{
 		char *D = readnext();
 		//int d=hex_decimal(D);
 		char *E = readnext();
-		char de[4];
+		char *de;
+		de = (char *)malloc(2);
 		char H[2];
 		H[0] = *E;
 		H[1] = *(E + 1);
 		strcpy(de, H);
 		strcat(de, D);
 		int e = hex_decimal(de);
-		if(flagC==1)
-			pc=e;
+		if (flagC == 1)
+			pc = e;
 	}
 	//--------------------------JNC-------------------------------------//
-	else if(strcmp(ch, "D2")==0)//JNC
+	else if (strcmp(ch, "D2") == 0) //JNC
 	{
 		char *D = readnext();
 		//int d=hex_decimal(D);
 		char *E = readnext();
-		char de[4];
+		char *de;
+		de = (char *)malloc(2);
 		char H[2];
 		H[0] = *E;
 		H[1] = *(E + 1);
 		strcpy(de, H);
 		strcat(de, D);
 		int e = hex_decimal(de);
-		if(flagC==0)
-			pc=e;
+		if (flagC == 0)
+			pc = e;
 	}
 	//-------------------------INR------------------------------------//
 	else if (strcmp(ch, "3C") == 0) //INR A
@@ -500,63 +546,70 @@ int function(char *ch)
 		acc++;
 		if (acc > 255)
 		{
-			flagC=1;
+			//flagC=1;
 			acc = acc - 256;
 		}
+		update_flagP(acc);
 	}
 	else if (strcmp(ch, "04") == 0) //INR B
 	{
 		regB++;
 		if (regB > 255)
 		{
-			flagC=1;
+			//flagC=1;
 			regB = regB - 256;
 		}
+		update_flagP(regB);
 	}
 	else if (strcmp(ch, "0C") == 0) //INR C
 	{
 		regC++;
 		if (regC > 255)
 		{
-			flagC=1;
+			//flagC=1;
 			regC = regC - 256;
 		}
+		update_flagP(regC);
 	}
 	else if (strcmp(ch, "14") == 0) //INR D
 	{
 		regD++;
 		if (regD > 255)
 		{
-			flagC=1;
+			//flagC=1;
 			regD = regD - 256;
 		}
+		update_flagP(regD);
 	}
 	else if (strcmp(ch, "1C") == 0) //INR E
 	{
 		regE++;
 		if (regE > 255)
 		{
-			flagC=1;
+			//flagC=1;
 			regE = regE - 256;
 		}
+		update_flagP(regE);
 	}
 	else if (strcmp(ch, "24") == 0) //INR H
 	{
 		regH++;
 		if (regH > 255)
 		{
-			flagC=1;
+			//flagC=1;
 			regH = regH - 256;
 		}
+		update_flagP(regH);
 	}
 	else if (strcmp(ch, "2C") == 0) //INR L
 	{
 		regL++;
 		if (regL > 255)
 		{
-			flagC=1;
+			//flagC=1;
 			regL = regL - 256;
 		}
+		update_flagP(regL);
 	}
 	else if (strcmp(ch, "34") == 0) //INR M
 		mem++;
@@ -680,21 +733,21 @@ int function(char *ch)
 	else if (strcmp(ch, "6E") == 0) //MOV L,M
 		regL = mem;
 	//--------------------------MOV M,X--------------------------//
-	else if (strcmp(ch, "67") == 0) //MOV M,A
+	else if (strcmp(ch, "77") == 0) //MOV M,A
 		mem = acc;
-	else if (strcmp(ch, "60") == 0) //MOV M,B
+	else if (strcmp(ch, "70") == 0) //MOV M,B
 		mem = regB;
-	else if (strcmp(ch, "61") == 0) //MOV M,C
+	else if (strcmp(ch, "71") == 0) //MOV M,C
 		mem = regC;
-	else if (strcmp(ch, "62") == 0) //MOV M,D
+	else if (strcmp(ch, "72") == 0) //MOV M,D
 		mem = regD;
-	else if (strcmp(ch, "63") == 0) //MOV M,E
+	else if (strcmp(ch, "73") == 0) //MOV M,E
 		mem = regE;
-	else if (strcmp(ch, "64") == 0) //MOV M,H
+	else if (strcmp(ch, "74") == 0) //MOV M,H
 		mem = regH;
-	else if (strcmp(ch, "65") == 0) //MOV M,L
+	else if (strcmp(ch, "75") == 0) //MOV M,L
 		mem = regL;
-	else if (strcmp(ch, "66") == 0) //MOV M,M
+	else if (strcmp(ch, "76") == 0) //MOV M,M
 		mem = mem;
 	//---------------------ACI Data-----------------------//
 	else if (strcmp(ch, "CE") == 0) //ACI DATA
@@ -707,85 +760,93 @@ int function(char *ch)
 			flagC = 1;
 			acc -= 256;
 		}
+		update_flagP(acc);
 	}
 	//-------------------------ADC X----------------------//
 	else if (strcmp(ch, "8F") == 0) //ADC A
 	{
 		acc += acc;
-		acc+=flagC;
+		acc += flagC;
 		if (acc > 255)
 		{
 			flagC = 1;
 			acc -= 256;
 		}
+		update_flagP(acc);
 	}
 	else if (strcmp(ch, "88") == 0) //ADC B
 	{
 		//printf("LOL");
 		acc += regB;
-		acc+=flagC;
-		printf("\nlol%d\n",acc);
+		acc += flagC;
+		//printf("\nlol%d\n",acc);
 		if (acc > 255)
 		{
 			flagC = 1;
 			acc -= 256;
 		}
-		printf("\nlol%d\n",acc);
+		update_flagP(acc);
+		//printf("\nlol%d\n",acc);
 	}
 	else if (strcmp(ch, "89") == 0) //ADC C
 	{
 		acc += regC;
-		acc+=flagC;
+		acc += flagC;
 		if (acc > 255)
 		{
 			flagC = 1;
 			acc -= 256;
 		}
+		update_flagP(acc);
 	}
 	else if (strcmp(ch, "8A") == 0) //ADC D
 	{
 		acc += regD;
-		acc+=flagC;
+		acc += flagC;
 		if (acc > 255)
 		{
 			flagC = 1;
 			acc -= 256;
 		}
+		update_flagP(acc);
 	}
 	else if (strcmp(ch, "8B") == 0) //ADC E
 	{
 		acc += regE;
-		acc+=flagC;
+		acc += flagC;
 		if (acc > 255)
 		{
 			flagC = 1;
 			acc -= 256;
 		}
+		update_flagP(acc);
 	}
 	else if (strcmp(ch, "8C") == 0) //ADC H
 	{
 		acc += regH;
-		acc+=flagC;
+		acc += flagC;
 		if (acc > 255)
 		{
 			flagC = 1;
 			acc -= 256;
 		}
+		update_flagP(acc);
 	}
 	else if (strcmp(ch, "8D") == 0) //ADC L
 	{
 		acc += regL;
-		acc+=flagC;
+		acc += flagC;
 		if (acc > 255)
 		{
 			flagC = 1;
 			acc -= 256;
 		}
+		update_flagP(acc);
 	}
 	else if (strcmp(ch, "8E") == 0) //ADC M
 	{
 		acc += mem;
-		acc+=flagC;
+		acc += flagC;
 		if (acc > 255)
 		{
 			flagC = 1;
@@ -800,6 +861,7 @@ int function(char *ch)
 		acc += d;
 		if (acc > 255)
 			acc = acc - 256;
+		update_flagP(acc);
 	}
 	//-----------------------ANA X---------------------------//
 	else if (strcmp(ch, "A7") == 0) //ANA A
@@ -814,6 +876,7 @@ int function(char *ch)
 			flagZ=0;
 		else
 			flagZ=1;*/
+		update_flagP(acc);
 	}
 	else if (strcmp(ch, "A0") == 0) //ANA B
 	{
@@ -827,6 +890,7 @@ int function(char *ch)
 			flagZ=0;
 		else
 			flagZ=1;*/
+		update_flagP(acc);
 	}
 	else if (strcmp(ch, "A1") == 0) //ANA C
 	{
@@ -840,6 +904,7 @@ int function(char *ch)
 			flagZ=0;
 		else
 			flagZ=1;*/
+		update_flagP(acc);
 	}
 	else if (strcmp(ch, "A2") == 0) //ANA D
 	{
@@ -853,6 +918,7 @@ int function(char *ch)
 			flagZ=0;
 		else
 			flagZ=1;*/
+		update_flagP(acc);
 	}
 	else if (strcmp(ch, "A3") == 0) //ANA E
 	{
@@ -866,6 +932,7 @@ int function(char *ch)
 			flagZ=0;
 		else
 			flagZ=1;*/
+		update_flagP(acc);
 	}
 	else if (strcmp(ch, "A4") == 0) //ANA H
 	{
@@ -879,6 +946,7 @@ int function(char *ch)
 			flagZ=0;
 		else
 			flagZ=1;*/
+		update_flagP(acc);
 	}
 	else if (strcmp(ch, "A5") == 0) //ANA L
 	{
@@ -892,6 +960,7 @@ int function(char *ch)
 			flagZ=0;
 		else
 			flagZ=1;*/
+		update_flagP(acc);
 	}
 	else if (strcmp(ch, "A6") == 0) //ANA M
 	{
@@ -921,14 +990,16 @@ int function(char *ch)
 			flagZ=0;
 		else
 			flagZ=1;*/
+		update_flagP(acc);
 	}
 	//------------------------CALL Label--------------------//
-	else if (strcmp(ch, "E6") == 0) //CALL LABEL
+	else if (strcmp(ch, "CD") == 0) //CALL LABEL
 	{
 		char *D = readnext();
 		//int d=hex_decimal(D);
 		char *E = readnext();
-		char de[4];
+		char *de;
+		de = (char *)malloc(2);
 		char H[2];
 		H[0] = *E;
 		H[1] = *(E + 1);
@@ -940,10 +1011,10 @@ int function(char *ch)
 				//----------------------------------------------------------------------------------------------work not done//
 	}
 	//--------------------------RET----------------------------//
-	else if (strcmp(ch, "C9")==0)//RET
+	else if (strcmp(ch, "C9") == 0) //RET
 	{
-		int p=systemStackPop();
-		pc=p+1;
+		int p = systemStackPop();
+		pc = p + 1;
 	}
 	//------------------------DCX X----------------------//DCX SP not implemented
 	else if (strcmp(ch, "0B") == 0) //DCX B
@@ -957,6 +1028,7 @@ int function(char *ch)
 		}
 		if (regB == 0 && regC == 0)
 			flagZ = 1;
+		//update_flagP(acc);
 	}
 	else if (strcmp(ch, "1B") == 0) //DCX D
 	{
@@ -984,7 +1056,7 @@ int function(char *ch)
 		update_mem();
 	}
 	//---------------------------INX X-----------------------------//(INX SP not done)
-	else if (strcmp(ch, "0B") == 0) //INX B
+	else if (strcmp(ch, "03") == 0) //INX B
 	{
 		if (regC < 255)
 			regC++;
@@ -994,7 +1066,7 @@ int function(char *ch)
 			regB++;
 		}
 	}
-	else if (strcmp(ch, "1B") == 0) //INX D
+	else if (strcmp(ch, "13") == 0) //INX D
 	{
 		if (regE < 255)
 			regE++;
@@ -1004,7 +1076,7 @@ int function(char *ch)
 			regD++;
 		}
 	}
-	else if (strcmp(ch, "1B") == 0) //INX H
+	else if (strcmp(ch, "23") == 0) //INX H
 	{
 		if (regL < 255)
 			regL++;
@@ -1020,7 +1092,8 @@ int function(char *ch)
 	{
 		char *D = readnext();
 		char *E = readnext();
-		char de[4];
+		char *de;
+		de = (char *)malloc(2);
 		char H[2];
 		H[0] = *E;
 		H[1] = *(E + 1);
@@ -1035,7 +1108,8 @@ int function(char *ch)
 	{
 		char *b = decimal_hex(regB);
 		char *c = decimal_hex(regC);
-		char bc[4];
+		char *bc;
+		bc = (char *)malloc(2);
 		char H[2];
 		H[0] = *b;
 		H[1] = *(b + 1);
@@ -1048,7 +1122,8 @@ int function(char *ch)
 	{
 		char *b = decimal_hex(regD);
 		char *c = decimal_hex(regE);
-		char bc[4];
+		char *bc;
+		bc = (char *)malloc(2);
 		char H[2];
 		H[0] = *b;
 		H[1] = *(b + 1);
@@ -1062,7 +1137,8 @@ int function(char *ch)
 	{
 		char *l = readnext();
 		char *h = readnext();
-		char hl[4];
+		char *hl;
+		hl = (char *)malloc(2);
 		char H[2];
 		H[0] = *h;
 		H[1] = *(h + 1);
@@ -1156,34 +1232,42 @@ int function(char *ch)
 	else if (strcmp(ch, "B7") == 0) //ORA A
 	{
 		acc = (acc | acc);
+		update_flagP(acc);
 	}
 	else if (strcmp(ch, "B0") == 0) //ORA B
 	{
 		acc = (acc | regB);
+		update_flagP(acc);
 	}
 	else if (strcmp(ch, "B1") == 0) //ORA C
 	{
 		acc = (acc | regC);
+		update_flagP(acc);
 	}
 	else if (strcmp(ch, "B2") == 0) //ORA D
 	{
 		acc = (acc | regD);
+		update_flagP(acc);
 	}
 	else if (strcmp(ch, "B3") == 0) //ORA E
 	{
 		acc = (acc | regE);
+		update_flagP(acc);
 	}
 	else if (strcmp(ch, "B4") == 0) //ORA H
 	{
 		acc = (acc | regH);
+		update_flagP(acc);
 	}
 	else if (strcmp(ch, "B5") == 0) //ORA L
 	{
 		acc = (acc | regL);
+		update_flagP(acc);
 	}
 	else if (strcmp(ch, "B6") == 0) //ORA M
 	{
 		acc = (acc | mem);
+		update_flagP(acc);
 	}
 	//-------------------------ORI Data----------------------//
 	else if (strcmp(ch, "F6") == 0) //ORA DATA
@@ -1191,6 +1275,7 @@ int function(char *ch)
 		char *D = readnext();
 		int d = hex_decimal(D);
 		acc = (acc | d);
+		update_flagP(acc);
 	}
 	//------------------------RAR------------------------------//
 	else if (strcmp(ch, "1F") == 0) //RAR
@@ -1281,7 +1366,8 @@ int function(char *ch)
 	{
 		char *l = readnext();
 		char *h = readnext();
-		char hl[4];
+		char *hl;
+		hl = (char *)malloc(2);
 		char H[2];
 		H[0] = *h;
 		H[1] = *(h + 1);
@@ -1300,7 +1386,8 @@ int function(char *ch)
 	{
 		char *h = decimal_hex(regB);
 		char *l = decimal_hex(regC);
-		char hl[4];
+		char *hl;
+		hl = (char *)malloc(2);
 		char H[2];
 		H[0] = *h;
 		H[1] = *(h + 1);
@@ -1315,7 +1402,8 @@ int function(char *ch)
 	{
 		char *h = decimal_hex(regD);
 		char *l = decimal_hex(regE);
-		char hl[4];
+		char *hl;
+		hl = (char *)malloc(2);
 		char H[2];
 		H[0] = *h;
 		H[1] = *(h + 1);
@@ -1330,34 +1418,42 @@ int function(char *ch)
 	else if (strcmp(ch, "AF") == 0) //XRA A
 	{
 		acc = (acc ^ acc);
+		update_flagP(acc);
 	}
 	else if (strcmp(ch, "A8") == 0) //XRA B
 	{
 		acc = (acc ^ regB);
+		update_flagP(acc);
 	}
 	else if (strcmp(ch, "A9") == 0) //XRA C
 	{
 		acc = (acc ^ regC);
+		update_flagP(acc);
 	}
 	else if (strcmp(ch, "AA") == 0) //XRA D
 	{
 		acc = (acc ^ regD);
+		update_flagP(acc);
 	}
 	else if (strcmp(ch, "AB") == 0) //XRA E
 	{
 		acc = (acc ^ regE);
+		update_flagP(acc);
 	}
 	else if (strcmp(ch, "AC") == 0) //XRA H
 	{
 		acc = (acc ^ regH);
+		update_flagP(acc);
 	}
 	else if (strcmp(ch, "AD") == 0) //XRA L
 	{
 		acc = (acc ^ regL);
+		update_flagP(acc);
 	}
 	else if (strcmp(ch, "AE") == 0) //XRA M
 	{
 		acc = (acc ^ mem);
+		update_flagP(acc);
 	}
 	//-----------------------XRI Data-----------------------------//
 	else if (strcmp(ch, "EE") == 0) //XRI DATA
@@ -1365,15 +1461,25 @@ int function(char *ch)
 		char *D = readnext();
 		int d = hex_decimal(D);
 		acc = (acc ^ d);
+		update_flagP(acc);
 	}
 	//-------------------------SUB X-------------------------------//
 	else if (strcmp(ch, "97") == 0) //SUB A
 	{
 		acc = 0;
+		if (acc == 0)
+			flagZ = 1;
+		else
+			flagZ = 0;
+		update_flagP(acc);
 	}
 	else if (strcmp(ch, "90") == 0) //SUB B
 	{
 		acc -= regB;
+		if (acc == 0)
+			flagZ = 1;
+		else
+			flagZ = 0;
 		if (acc < 0)
 		{
 			acc = 256 + acc;
@@ -1381,10 +1487,15 @@ int function(char *ch)
 		}
 		else
 			flagS = 0;
+		update_flagP(acc);
 	}
 	else if (strcmp(ch, "91") == 0) //SUB C
 	{
 		acc -= regC;
+		if (acc == 0)
+			flagZ = 1;
+		else
+			flagZ = 0;
 		if (acc < 0)
 		{
 			acc = 256 + acc;
@@ -1392,10 +1503,15 @@ int function(char *ch)
 		}
 		else
 			flagS = 0;
+		update_flagP(acc);
 	}
 	else if (strcmp(ch, "92") == 0) //SUB D
 	{
 		acc -= regD;
+		if (acc == 0)
+			flagZ = 1;
+		else
+			flagZ = 0;
 		if (acc < 0)
 		{
 			acc = 256 + acc;
@@ -1403,10 +1519,15 @@ int function(char *ch)
 		}
 		else
 			flagS = 0;
+		update_flagP(acc);
 	}
 	else if (strcmp(ch, "93") == 0) //SUB E
 	{
 		acc -= regE;
+		if (acc == 0)
+			flagZ = 1;
+		else
+			flagZ = 0;
 		if (acc < 0)
 		{
 			acc = 256 + acc;
@@ -1414,10 +1535,15 @@ int function(char *ch)
 		}
 		else
 			flagS = 0;
+		update_flagP(acc);
 	}
 	else if (strcmp(ch, "94") == 0) //SUB H
 	{
 		acc -= regH;
+		if (acc == 0)
+			flagZ = 1;
+		else
+			flagZ = 0;
 		if (acc < 0)
 		{
 			acc = 256 + acc;
@@ -1425,10 +1551,15 @@ int function(char *ch)
 		}
 		else
 			flagS = 0;
+		update_flagP(acc);
 	}
 	else if (strcmp(ch, "95") == 0) //SUB L
 	{
 		acc -= regL;
+		if (acc == 0)
+			flagZ = 1;
+		else
+			flagZ = 0;
 		if (acc < 0)
 		{
 			acc = 256 + acc;
@@ -1436,10 +1567,15 @@ int function(char *ch)
 		}
 		else
 			flagS = 0;
+		update_flagP(acc);
 	}
 	else if (strcmp(ch, "96") == 0) //SUB M
 	{
 		acc -= mem;
+		if (acc == 0)
+			flagZ = 1;
+		else
+			flagZ = 0;
 		if (acc < 0)
 		{
 			acc = 256 + acc;
@@ -1449,11 +1585,15 @@ int function(char *ch)
 			flagS = 0;
 	}
 	//----------------------------SUI Data-----------------------//
-	else if (strcmp(ch, "90") == 0) //SUB B
+	else if (strcmp(ch, "D6") == 0) //SUI DATA
 	{
 		char *d = readnext();
 		int D = hex_decimal(d);
 		acc -= D;
+		if (acc == 0)
+			flagZ = 1;
+		else
+			flagZ = 0;
 		if (acc < 0)
 		{
 			acc = 256 + acc;
@@ -1461,54 +1601,55 @@ int function(char *ch)
 		}
 		else
 			flagS = 0;
+		update_flagP(acc);
 	}
 	//--------------------PUSH X-------------------------//PUSH PSW not done
-	else if(strcmp(ch, "C5")==0)//PUSH B
+	else if (strcmp(ch, "C5") == 0) //PUSH B
 	{
 		systemStackPush(regB);
 		systemStackPush(regC);
 	}
-	else if(strcmp(ch, "D5")==0)//PUSH D
+	else if (strcmp(ch, "D5") == 0) //PUSH D
 	{
 		systemStackPush(regD);
 		systemStackPush(regE);
 	}
-	else if(strcmp(ch, "E5")==0)//PUSH H
+	else if (strcmp(ch, "E5") == 0) //PUSH H
 	{
 		systemStackPush(regH);
 		systemStackPush(regL);
 	}
 	//-------------------------POP X-----------------------//POP PSW not done
-	else if(strcmp(ch, "C1")==0)//POP B
+	else if (strcmp(ch, "C1") == 0) //POP B
 	{
-		regC=systemStackPop();
-		regB=systemStackPop();
+		regC = systemStackPop();
+		regB = systemStackPop();
 	}
-	else if(strcmp(ch, "D1")==0)//POP D
+	else if (strcmp(ch, "D1") == 0) //POP D
 	{
-		regE=systemStackPop();
-		regD=systemStackPop();
+		regE = systemStackPop();
+		regD = systemStackPop();
 	}
-	else if(strcmp(ch, "E1")==0)//POP H
+	else if (strcmp(ch, "E1") == 0) //POP H
 	{
-		regL=systemStackPop();
-		regH=systemStackPop();
+		regL = systemStackPop();
+		regH = systemStackPop();
 	}
 	//--------------------------XCHG---------------------------//
-	else if(strcmp(ch, "EB")==0)//XCHG
+	else if (strcmp(ch, "EB") == 0) //XCHG
 	{
-		int temp=regD;
-		regD=regH;
-		regH=temp;
-		temp=regE;
-		regE=regL;
-		regL=temp;
+		int temp = regD;
+		regD = regH;
+		regH = temp;
+		temp = regE;
+		regE = regL;
+		regL = temp;
 		update_mem();
 	}
 	//--------------------------------------------------------//
 	else
 	{
-		printf("Error : code not recognized - %s\n",ch);
+		printf("Error : code not recognized - %s\n", ch);
 		exit(0);
 	}
 
