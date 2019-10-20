@@ -162,5 +162,10 @@ int main(int argc, char *argv[])
 
     showOutput();
 
+    FILE* out=fopen("memory.txt","w");
+    for(int i=0;i<10000;i++)
+    {
+        fprintf(out,"Value at address %x = %s\n",i,memory[i]);
+    }
     return 0;
 }
