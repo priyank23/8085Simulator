@@ -1,9 +1,0 @@
-start:
-;comment line
-    lda 2000h
-    mov b,a
-    lda 2001h
-    add b
-    sta 2050h
-    rst_5
-end

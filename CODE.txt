@@ -1,0 +1,11 @@
+macro load data
+    lda data
+mend
+start:
+    load 2000h
+    mov b,a
+X: load 2001h
+    add b
+    sta 2050h
+    rst_5
+end

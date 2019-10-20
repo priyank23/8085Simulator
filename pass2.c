@@ -3,10 +3,11 @@
 void pass2(char *file)
 {
     pass1(file);
+    printf("Running pass2 of Assembler...\n");
     FILE *input;
     FILE *output;
     input=fopen("inter.txt","r");
-    input=fopen(file,"r");
+    // input=fopen(file,"r");
     file[strlen(file)-3]='o';
     file[strlen(file)-2]='b';
     file[strlen(file)-1]='j';
@@ -111,6 +112,7 @@ void pass2(char *file)
         // fgets(line,50,input);
         // tokenize(line);
     }
+    printf("Execution of pass2 of Assembler Completed!\n");
     fclose(input);
     fclose(output);
 }
